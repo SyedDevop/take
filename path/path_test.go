@@ -64,7 +64,7 @@ var pathTable = []string{
 
 func BenchmarkFile(b *testing.B) {
 	for _, v := range pathTable {
-		b.Run("Path :="+v, func(b *testing.B) {
+		b.Run("File :="+v, func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
 				path.Base(v)
 			}

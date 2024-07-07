@@ -4,7 +4,8 @@ import (
 	"flag"
 	"fmt"
 	"os"
-	"path/filepath"
+
+	"github.com/SyedDevop/take/path"
 )
 
 const USAGE = `Usage: take [options] <path>
@@ -40,35 +41,16 @@ func init() {
 }
 
 func main() {
-	path := flag.Arg(0)
-	if path == "" {
+	p := flag.Arg(0)
+	if p == "" {
 		fmt.Println("Error: A path argument is required")
 		PrintUsage()
 		os.Exit(1)
 	}
 
 	if *f {
-		fmt.Println(filepath.Base(path))
+		fmt.Print(path.Base(p))
 	} else if *d {
-
-		endIndex := len(path) - 1
-
-		// Return empty string if path is empty.
-		if endIndex < 0 {
-			fmt.Print("")
-			return
-		}
-
-		for {
-			switch path[endIndex] {
-			case '.':
-				fmt.Println("d", filepath.Dir(path))
-				return
-			case '/':
-				fmt.Println(path)
-				return
-			}
-			endIndex--
-		}
+		fmt.Print(path.Dir(p))
 	}
 }

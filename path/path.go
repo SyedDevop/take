@@ -22,25 +22,22 @@ func Dir(p string) string {
 	}
 
 	sIdx, eIdx := CleanPath(p)
-	backCount := 0
 	tailIsFile := false
 
-	for eIdx > sIdx {
-		if p[eIdx-1] == '.' {
+	for i := eIdx - 1; i >= sIdx; i-- {
+		if p[i] == '.' {
 			tailIsFile = true
 		}
-		if tailIsFile && p[eIdx-1] == '/' {
-			return p[sIdx : eIdx-1]
+		if tailIsFile && p[i] == '/' {
+			return p[sIdx:i]
 		}
-		backCount++
-		eIdx--
 	}
 
-	if tailIsFile && eIdx == sIdx {
+	if tailIsFile {
 		return ""
 	}
 
-	return p[sIdx : eIdx+backCount]
+	return p[sIdx:eIdx]
 }
 
 func Base(p string) string {
@@ -53,19 +50,19 @@ func Base(p string) string {
 	sIdx, eIdx := CleanPath(p)
 
 	tailIsFile := false
-	backCount := 0
-	for eIdx > sIdx {
-		if p[eIdx-1] == '.' {
+	for i := eIdx - 1; i >= sIdx; i-- {
+		if p[i] == '.' {
 			tailIsFile = true
 		}
-		if tailIsFile && p[eIdx-1] == '/' {
-			return p[eIdx : eIdx+backCount]
+		if p[i] == '/' {
+			if tailIsFile {
+				return p[i+1 : eIdx]
+			}
+			return ""
 		}
-		eIdx--
-		backCount++
 	}
-	if tailIsFile && eIdx == sIdx {
-		return p[sIdx : eIdx+backCount]
+	if tailIsFile {
+		return p[sIdx:eIdx]
 	}
 	return ""
 }

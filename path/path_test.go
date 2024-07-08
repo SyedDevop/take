@@ -9,7 +9,7 @@ import (
 
 func TestDirPath(t *testing.T) {
 	pathTable := [][2]string{
-		// {"", ""},
+		{"", ""},
 		{"./m", "m"},
 		{"main.go", ""},
 		{"./main.go", ""},
@@ -20,13 +20,13 @@ func TestDirPath(t *testing.T) {
 	}
 
 	for _, p := range pathTable {
-		assert.Equal(t, p[1], path.Dir(p[0]))
+		assert.Equal(t, p[1], path.Dir(p[0]), "Error on :"+p[0])
 	}
 }
 
 func TestFilePath(t *testing.T) {
 	pathTable := [][2]string{
-		// {"", ""},
+		{"", ""},
 		{"./m", ""},
 		{"main.go", "main.go"},
 		{"./main.go", "main.go"},
@@ -52,22 +52,22 @@ var pathTable = []string{
 	"/home/go/main.go/",
 }
 
-// func BenchmarkDir(b *testing.B) {
-// 	for _, v := range pathTable {
-// 		b.Run("Path :="+v, func(b *testing.B) {
-// 			for i := 0; i < b.N; i++ {
-// 				path.Dir(v)
-// 			}
-// 		})
-// 	}
-// }
-
-func BenchmarkFile(b *testing.B) {
+func BenchmarkDir(b *testing.B) {
 	for _, v := range pathTable {
-		b.Run("File :="+v, func(b *testing.B) {
+		b.Run("Path :="+v, func(b *testing.B) {
 			for i := 0; i < b.N; i++ {
-				path.Base(v)
+				path.Dir(v)
 			}
 		})
 	}
 }
+
+// func BenchmarkFile(b *testing.B) {
+// 	for _, v := range pathTable {
+// 		b.Run("File :="+v, func(b *testing.B) {
+// 			for i := 0; i < b.N; i++ {
+// 				path.Base(v)
+// 			}
+// 		})
+// 	}
+// }

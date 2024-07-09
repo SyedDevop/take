@@ -11,23 +11,17 @@ void slice(const char *str, char *result, size_t start, size_t end) {
   result[j++] = 0;
 }
 void clean(char *p, int *sIdx, int *eIdx) {
-  *sIdx = 0;
   if (eIdx == NULL) {
     printf("eIdx is NULL\n");
     exit(1);
   };
 
-  for (int i = *eIdx; i >= *sIdx; i--) {
-    if (p[i] != '/') {
-      *eIdx = i - 1;
-      break;
-    }
+  while (*eIdx > 0 && p[*eIdx - 1] == '/') {
+    (*eIdx)--;
   }
-  for (int i = *sIdx; i <= *eIdx; i++) {
-    if (p[i] != '/' || p[i] != '.') {
-      *sIdx = i + 1;
-      break;
-    }
+
+  while (p[*sIdx] == '/' || p[*sIdx] == '.') {
+    (*sIdx)++;
   }
 }
 

@@ -3,6 +3,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+#define USAGE                                                                  \
+  "Usage: take [options] <path>\nOptions:\n    -f        Extract and display " \
+  "the file name from the given path (e.g., "                                  \
+  "fod/bar/bass.go -> bass.go)\n    -d        Extract and display the "        \
+  "directory path from the given path "                                        \
+  "(e.g., fod/bar/bass.go -> fod/bar)\n    -h        Show help and usage "     \
+  "information\nExample:\n   take -f fod/bar/bass.go\n   take -d "             \
+  "fod/bar/bass.go\n"
+
 void slice(const char *str, char *result, size_t start, size_t end) {
   size_t j = 0;
   for (size_t i = start; i <= end; ++i) {
@@ -82,14 +91,31 @@ void Base(char *p, char *file_name) {
   return;
 }
 
-int main() {
-  char *str = "//some/path/with/main.go/";
-  char file_name[strlen(str) + 1];
-  char path[strlen(str) + 1];
-  Base(str, file_name);
-  Dir(str, path);
-  printf("The Full Path is %s \n", str);
-  printf("The file name is %s \n", file_name);
-  printf("The Path is %s \n", path);
+int main(int argc, char *argv[]) {
+  if (argc == 2) {
+    if (strcmp(argv[1], "-h") == 0) {
+      printf("%s ", USAGE);
+      return 0;
+    }
+  }
+  if (argc == 3) {
+    char *str = argv[2];
+    if (strcmp(argv[1], "-h") == 0) {
+      printf("%s ", USAGE);
+      return 0;
+    }
+    if (strcmp(argv[1], "-f") == 0) {
+      char file_name[strlen(str) + 1];
+      Base(str, file_name);
+      printf("%s", file_name);
+      return 0;
+    }
+    if (strcmp(argv[1], "-d") == 0) {
+      char path[strlen(str) + 1];
+      Dir(str, path);
+      printf("%s", path);
+      return 0;
+    }
+  }
   return 0;
 }

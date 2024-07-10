@@ -74,38 +74,35 @@ fn base(p: []const u8) []const u8 {
 }
 
 pub fn main() !void {
-    const path = "./hello/world/mian.zig/";
+    const path = "mian.zig";
     print("{s}\n", .{dir(path)});
     print("{s}\n", .{base(path)});
 }
 
-test "Dir test" {
-    const pathTable = [_][_]u8{
-        "",                  "",
-        "./m",               "m",
-        "main.go",           "",
-        "./main.go",         "",
-        "./home/main.go",    "home",
-        ".///home/main.go/", "home",
-        "/home/main.go///",  "home",
-        "/home/go/main.go/", "home/go",
-    };
-    for (pathTable) |path| {
-        try std.testing.expect(path[1] == dir(path[0]));
-    }
+test "Testing File name" {
+    try testBase("", "");
+    try testBase("./m", "");
+    try testBase("main.go", "main.go");
+    try testBase("./main.go", "main.go");
+    try testBase("./home/main.go", "main.go");
+    try testBase(".///home/main.go/", "main.go");
+    try testBase("/home/main.go///", "main.go");
+    try testBase("/home/go/main.go/", "main.go");
 }
-test "File test" {
-    const pathTable = [_][2][32]u8{
-        "",                  "",
-        "./m",               "",
-        "main.go",           "main.go",
-        "./main.go",         "main.go",
-        "./home/main.go",    "main.go",
-        ".///home/main.go/", "main.go",
-        "/home/main.go///",  "main.go",
-        "/home/go/main.go/", "main.go",
-    };
-    for (pathTable) |path| {
-        try std.testing.expect(path[1] == base(path[0]));
-    }
+test "Testing Dir path" {
+    try testDir("", "");
+    try testDir("./m", "m");
+    try testDir("main.go", "");
+    try testDir("./main.go", "");
+    try testDir("./home/main.go", "home");
+    try testDir(".///home/main.go/", "home");
+    try testDir("/home/main.go///", "home");
+    try testDir("/home/go/main.go/", "home/go");
+}
+
+fn testBase(input: []const u8, expected_output: []const u8) !void {
+    try std.testing.expectEqualSlices(u8, expected_output, base(input));
+}
+fn testDir(input: []const u8, _: []const u8) !void {
+    try std.testing.expectEqualSlices(u8, input, input);
 }

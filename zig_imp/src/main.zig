@@ -29,7 +29,7 @@ fn dir(p: []const u8) []const u8 {
 
     var tail_is_file = false;
     var i: usize = point.eIdx - 1;
-    while (i >= point.sIdx) : (i -= 1) {
+    while (i > point.sIdx) : (i -= 1) {
         if (p[i] == '.') {
             tail_is_file = true;
         }
@@ -54,7 +54,7 @@ fn base(p: []const u8) []const u8 {
 
     var tail_is_file = false;
     var i: usize = point.eIdx - 1;
-    while (i >= point.sIdx) : (i -= 1) {
+    while (i > point.sIdx) : (i -= 1) {
         if (p[i] == '.') {
             tail_is_file = true;
         }

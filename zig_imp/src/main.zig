@@ -1,6 +1,17 @@
 const std = @import("std");
 const print = std.debug.print;
 
+const USAGE =
+    \\Usage: take [options] <path>
+    \\ Options:
+    \\   -f        Extract and display the file name from the given path (e.g., fod/bar/bass.go -> bass.go)
+    \\   -d        Extract and display the directory path from the given path (e.g., fod/bar/bass.go -> fod/bar)
+    \\   -h        Show help and usage information
+    \\ Example:
+    \\   take -f fod/bar/bass.go
+    \\   take -d fod/bar/bass.go
+;
+
 const Point = struct {
     sIdx: usize,
     eIdx: usize,
@@ -74,9 +85,24 @@ fn base(p: []const u8) []const u8 {
 }
 
 pub fn main() !void {
-    const path = "mian.zig";
-    print("{s}\n", .{dir(path)});
-    print("{s}\n", .{base(path)});
+    var gpa = std.heap.GeneralPurposeAllocator(.{}){};
+    const allocator = gpa.allocator();
+    defer _ = gpa.deinit();
+
+    // Parse args into string array (error union needs 'try')
+    const args = try std.process.argsAlloc(allocator);
+    defer std.process.argsFree(allocator, args);
+    if (args.len == 3) {
+        const flag = args[1];
+        const path = args[2];
+        if (std.mem.eql(u8, flag, "-f")) {
+            print("{s}\n", .{base(path)});
+        } else if (std.mem.eql(u8, flag, "-d")) {
+            print("{s}\n", .{dir(path)});
+        }
+    } else if (args.len == 2 and std.mem.eql(u8, args[1], "-h")) {
+        print("{s}", .{USAGE});
+    }
 }
 
 test "Testing File name" {

@@ -15,12 +15,6 @@ func CleanPath(p string) (sIdx, eIdx int) {
 }
 
 func Dir(p string) string {
-	// Return empty string if p is empty.
-	// FIX: if empty string is passed return empty
-	if len(p) == 0 {
-		return ""
-	}
-
 	sIdx, eIdx := CleanPath(p)
 	tailIsFile := false
 
@@ -41,12 +35,6 @@ func Dir(p string) string {
 }
 
 func Base(p string) string {
-	// Return empty string if p is empty.
-	// FIX: if empty string is passed return empty
-	if len(p) == 0 {
-		return ""
-	}
-
 	sIdx, eIdx := CleanPath(p)
 
 	tailIsFile := false

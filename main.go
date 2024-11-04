@@ -34,18 +34,17 @@ func init() {
 		PrintUsage()
 		os.Exit(0)
 	}
-	if !*f && !*d {
-		PrintUsage()
-		os.Exit(0)
-	}
 }
 
 func main() {
 	p := flag.Arg(0)
+
+	if !*f && !*d {
+		return
+	}
+
 	if p == "" {
-		fmt.Println("Error: A path argument is required")
-		PrintUsage()
-		os.Exit(1)
+		return
 	}
 
 	if *f {

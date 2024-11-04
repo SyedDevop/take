@@ -14,7 +14,7 @@ run:
 
 install: build
 	@mkdir -p ~/app/linux-setup/bin
-	@cp -v ./bin/path ~/app/linux-setup/bin/
+	@cp -v ./bin/path ~/.local/bin/g_path
 
 build:
 	@go build -ldflags "-s -w" -o ./bin/path .

@@ -36,6 +36,8 @@ func init() {
 	}
 }
 
+// TODO: Add support for "~/" before path name.
+
 func main() {
 	p := flag.Arg(0)
 

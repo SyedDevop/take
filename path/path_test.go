@@ -10,10 +10,16 @@ import (
 func TestDirPath(t *testing.T) {
 	pathTable := [][2]string{
 		{"", ""},
+		{"~/", "~/"},
 		{"./m", "m"},
 		{"main.go", ""},
 		{"./main.go", ""},
 		{"./home/main.go", "home"},
+		{"~/home/main.go", "~/home"},
+		{"~//home/main.go", "~/home"},
+		{"~~~////home/main.go", "~/home"},
+		{"~/~/~/~/home/main.go", "~/home"},
+		{"~//~/home/main.go", "~/home"},
 		{".///home/main.go/", "home"},
 		{"/home/main.go///", "home"},
 		{"/home/go/main.go/", "home/go"},
@@ -34,10 +40,13 @@ func TestFilePath(t *testing.T) {
 		{".///home/main.go/", "main.go"},
 		{"/home/main.go///", "main.go"},
 		{"/home/go/main.go/", "main.go"},
+		{"~/home/go/main.go/", "main.go"},
+		{"~/main.go/", "~/main.go"},
+		{"~///~~~~/main.go/", "~/main.go"},
 	}
 
 	for _, p := range pathTable {
-		assert.Equal(t, p[1], path.Base(p[0]))
+		assert.Equal(t, p[1], path.Base(p[0]), "Error on :"+p[0])
 	}
 }
 
